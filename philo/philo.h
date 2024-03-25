@@ -61,6 +61,8 @@ int ft_atoi(const char *str);
 
 //init.c
 time_t	ft_get_time(void);
-void	ft_get_info(t_info *info, char **argv);
-void	print_info(t_info *info);
+void		ft_get_info(t_info *info, char **argv);
+void		print_info(t_info *info);
+void		ft_init_philos(t_info *info);
+
 #endif

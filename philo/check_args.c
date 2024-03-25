@@ -51,7 +51,17 @@ int	check_number_of_philosophers(char *argv)
 {
 	if (ft_atoi(argv) < 1)
 	{
-		printf("Error: number of philosophers must be at least 1\n");
+		printf("Error: philo don't work without philosophers\n");
+		return (1);
+	}
+	return (0);
+}
+
+int	check_number_of_meals(char *argv)
+{
+	if (ft_atoi(argv) < 1)
+	{
+		printf("Error: philo don't work without meals\n");
 		return (1);
 	}
 	return (0);
@@ -60,7 +70,7 @@ int	check_number_of_philosophers(char *argv)
 int	check_args(int argc, char **argv)
 {
 	if (check_args_number(argc) || check_all_args_are_numbers(argv)
-		|| check_number_of_philosophers(argv[1]))
+		|| check_number_of_philosophers(argv[1]) || check_number_of_meals(argv[5]))
 		return (1);
 	check_args_number(argc);
 	check_all_args_are_numbers(argv);

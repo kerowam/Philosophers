@@ -34,3 +34,25 @@ void	ft_get_info(t_info *info, char **argv)
 	info->finished = 0;
 	info->start_time = ft_get_time();
 }
+
+void	ft_init_philos(t_info *info)
+{
+	int i;
+
+	i = 0;
+	info->philos = malloc(sizeof(t_philo) * info->nbr_of_philos);
+	if (!info->philos)
+	{
+		printf("Error: malloc failed\n");
+		return ;
+	}
+	while (i < info->nbr_of_philos)
+	{
+		info->philos[i].id = i + 1;
+		info->philos[i].last_meal = info->start_time;
+		info->philos[i].meals_eaten = 0;
+		info->philos[i].status = 0;
+		info->philos[i].info = info;
+		i++;
+	}
+}
