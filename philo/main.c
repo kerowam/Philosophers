@@ -14,6 +14,10 @@
 
 int	main(int argc, char **argv)
 {
-	check_args(argc, argv);
-	return (0);
+	t_info	info;
+
+	if (check_args(argc, argv));
+		return (1);
+		ft_get_info();
+		return (0);
 }
