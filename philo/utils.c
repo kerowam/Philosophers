@@ -6,7 +6,7 @@
 /*   By: gfredes- <gfredes-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 15:09:24 by gfredes-          #+#    #+#             */
-/*   Updated: 2024/03/25 15:10:31 by gfredes-         ###   ########.fr       */
+/*   Updated: 2024/03/25 16:31:57 by gfredes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,11 @@ int	ft_atoi(const char *str)
 	return (nb);
 }
 
-void	print_info(t_info *info)
+/*void	print_info(t_info *info)
 {
 	printf("Number of philosophers: %d\n", info->nbr_of_philos);
-	printf("Time to die: %llu\n", info->time_to_die);
-	printf("Time to eat: %llu\n", info->time_to_eat);
-	printf("Time to sleep: %llu\n", info->time_to_sleep);
+	printf("Time to die: %lu\n", info->time_to_die);
+	printf("Time to eat: %lu\n", info->time_to_eat);
+	printf("Time to sleep: %lu\n", info->time_to_sleep);
 	printf("Number of times each philosopher must eat: %d\n", info->nbr_of_times_each_philo_must_eat);
-}
+}*/

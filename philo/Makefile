@@ -19,6 +19,7 @@ CLEAN = rm -f
 SRC = main.c\
 	check_args.c\
 	utils.c\
+	init.c
 
 OBJT = $(SRC:.c=.o)
 

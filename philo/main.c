@@ -16,9 +16,9 @@ int	main(int argc, char **argv)
 {
 	t_info	info;
 
-	if (check_args(argc, argv));
+	if (check_args(argc, argv))
 		return (1);
 	ft_get_info(&info, argv);
-	print_info(&info);
+	//print_info(&info);
 	return (0);
 }

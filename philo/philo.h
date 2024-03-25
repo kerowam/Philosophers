@@ -24,10 +24,10 @@ struct s_philo;
 typedef struct s_info
 {
 	int							nbr_of_philos;
-	u_int64_t				start_time;
-	u_int64_t				time_to_die;
-	u_int64_t 			time_to_eat;
-	u_int64_t				time_to_sleep;
+	time_t				start_time;
+	time_t				time_to_die;
+	time_t 			time_to_eat;
+	time_t				time_to_sleep;
 	int							nbr_of_times_each_philo_must_eat;
 	struct s_philo	*philos;
 	int							death;
@@ -44,7 +44,7 @@ typedef struct s_philo
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
 	t_info					*info;
-	u_int64_t				last_meal;
+	time_t				last_meal;
 	int							meals_eaten;
 	int							status;
 }					t_philo;
@@ -61,6 +61,6 @@ int ft_atoi(const char *str);
 
 //init.c
 time_t	ft_get_time(void);
-void		ft_get_info(t_info *info, char **argv);
-
+void	ft_get_info(t_info *info, char **argv);
+void	print_info(t_info *info);
 #endif
