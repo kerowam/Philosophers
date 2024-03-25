@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_args.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gfredes- <gfredes-@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: gfredes- <gfredes-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 14:56:08 by gfredes-          #+#    #+#             */
-/*   Updated: 2024/03/25 14:56:08 by gfredes-         ###   ########.fr       */
+/*   Updated: 2024/03/25 15:09:05 by gfredes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,7 @@ int check_all_args_are_numbers(char **argv)
 	return (0);
 }
 
-
-int check_number_of_philosophers(char *argv)
+int	check_number_of_philosophers(char *argv)
 {
 	if (ft_atoi(argv) < 1)
 	{
@@ -58,15 +57,15 @@ int check_number_of_philosophers(char *argv)
 	return (0);
 }
 
-int check_args(int argc, char **argv)
+int	check_args(int argc, char **argv)
 {
-	if (char_args_number(argc) || check_all_args_are_numbers(argv) || check_number_of_philosophers(argv[1]))
+	if (check_args_number(argc) || check_all_args_are_numbers(argv)
+		|| check_number_of_philosophers(argv[1]))
 		return (1);
 	check_args_number(argc);
 	check_all_args_are_numbers(argv);
 	// check_max_int(argv);
 	check_number_of_philosophers(argv[1]);
-
 	return (0);
 }
 

@@ -17,14 +17,15 @@ CFLAGS = -Wall -Wextra -Werror
 CLEAN = rm -f
 
 SRC = main.c\
-			check_args.c\
+	check_args.c\
+	utils.c\
 
 OBJT = $(SRC:.c=.o)
 
 all: $(NAME)
 
 $(NAME): $(OBJT)
-	gcc $(CFLAGS) $(SRC) -o -lpthread $(NAME)
+	gcc $(CFLAGS) $(SRC) -o $(NAME) -lpthread 
 
 clean:
 	$(CLEAN) $(OBJT)
