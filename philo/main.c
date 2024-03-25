@@ -18,6 +18,7 @@ int	main(int argc, char **argv)
 
 	if (check_args(argc, argv));
 		return (1);
-		ft_get_info();
-		return (0);
+	ft_get_info(&info, argv);
+	print_info(&info);
+	return (0);
 }

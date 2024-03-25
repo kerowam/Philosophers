@@ -37,3 +37,12 @@ int	ft_atoi(const char *str)
 	nb *= neg;
 	return (nb);
 }
+
+void	print_info(t_info *info)
+{
+	printf("Number of philosophers: %d\n", info->nbr_of_philos);
+	printf("Time to die: %llu\n", info->time_to_die);
+	printf("Time to eat: %llu\n", info->time_to_eat);
+	printf("Time to sleep: %llu\n", info->time_to_sleep);
+	printf("Number of times each philosopher must eat: %d\n", info->nbr_of_times_each_philo_must_eat);
+}
