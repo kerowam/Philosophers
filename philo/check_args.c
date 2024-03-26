@@ -47,21 +47,27 @@ int check_all_args_are_numbers(char **argv)
 	return (0);
 }
 
-int	check_number_of_philosophers(char *argv)
+int	check_number_of_philos_and_meals(char *philos, char *meals)
 {
-	if (ft_atoi(argv) < 1)
+	if (ft_atoi(philos) < 1)
 	{
 		printf("Error: philo don't work without philosophers\n");
+		return (1);
+	}
+	if (ft_atoi(meals) < 1)
+	{
+		printf("Error: philo don't work without meals\n");
 		return (1);
 	}
 	return (0);
 }
 
-int	check_number_of_meals(char *argv)
+int	check_time(char *time_to_die, char *time_to_eat, char *time_to_sleep)
 {
-	if (ft_atoi(argv) < 1)
+	if (ft_atoi(time_to_die) < 0 || ft_atoi(time_to_eat) < 0
+			|| ft_atoi(time_to_sleep) < 0)
 	{
-		printf("Error: philo don't work without meals\n");
+		printf("Error: time can't be negative\n");
 		return (1);
 	}
 	return (0);
@@ -70,12 +76,10 @@ int	check_number_of_meals(char *argv)
 int	check_args(int argc, char **argv)
 {
 	if (check_args_number(argc) || check_all_args_are_numbers(argv)
-		|| check_number_of_philosophers(argv[1]) || check_number_of_meals(argv[5]))
+			|| check_number_of_philos_and_meals(argv[1], argv[5])
+			|| check_time(argv[2], argv[3], argv[4]))
 		return (1);
-	check_args_number(argc);
-	check_all_args_are_numbers(argv);
 	// check_max_int(argv);
-	check_number_of_philosophers(argv[1]);
 	return (0);
 }
 
