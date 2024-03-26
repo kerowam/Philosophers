@@ -35,6 +35,7 @@ typedef struct s_info
 	pthread_t 			*threads_id;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	print;
+	pthread_mutex_t	mutex;
 }					t_info;
 
 typedef struct s_philo
@@ -43,10 +44,12 @@ typedef struct s_philo
 	pthread_t				thread;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
+	pthread_mutex_t mutex;
 	t_info					*info;
-	time_t					last_meal;
+	time_t					time_of_death;
 	int							meals_eaten;
 	int							status;
+	int							eating;
 }					t_philo;
 
 //check_args.c
@@ -64,5 +67,13 @@ time_t	ft_get_time(void);
 void		ft_get_info(t_info *info, char **argv);
 void		print_info(t_info *info);
 void		ft_init_philos(t_info *info);
+
+//threads.c
+void *routine(void *philo);
+
+// actions.c
+void ft_eat(t_philo *ph);
+void	ft_sleep(t_philo *ph);
+void	ft_think(t_philo *ph);
 
 #endif

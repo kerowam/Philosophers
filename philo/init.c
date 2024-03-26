@@ -51,6 +51,7 @@ int	ft_get_info(t_info *info, char **argv)
 	info->finished = 0;
 	info->start_time = ft_get_time();
 	pthread_mutex_init(&info->print, NULL);
+	pthread_mutex_init(&info->mutex, NULL);
 	info->forks = malloc(sizeof(pthread_mutex_t) * info->nbr_of_philos);
 	info->threads_id = malloc(sizeof(pthread_t) * info->nbr_of_philos);
 	if (!info->forks || !info->threads_id)
@@ -93,10 +94,11 @@ void	ft_init_philos(t_info *info)
 	while (i < info->nbr_of_philos)
 	{
 		info->philos[i].id = i + 1;
-		info->philos[i].last_meal = info->start_time;
+		info->philos[i].time_of_death = info->start_time + info->time_to_die;
 		info->philos[i].meals_eaten = 0;
 		info->philos[i].status = 0;
 		info->philos[i].info = info;
+		pthread_mutex_init(&info->philos[i].mutex, NULL);
 		ft_set_forks(info);
 		i++;
 	}
