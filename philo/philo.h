@@ -70,9 +70,10 @@ void		ft_init_philos(t_info *info);
 
 //threads.c
 void *routine(void *philo);
+void ft_threads(t_info *info);
 
 // actions.c
-void ft_eat(t_philo *ph);
+void	ft_eat(t_philo *ph);
 void	ft_sleep(t_philo *ph);
 void	ft_think(t_philo *ph);
 
