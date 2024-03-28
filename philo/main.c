@@ -62,5 +62,7 @@ int	main(int argc, char **argv)
 		ft_one_philo(&info);
 		return (1);
 	}
+	else
+		ft_threads(&info);
 	return (0);
 }
