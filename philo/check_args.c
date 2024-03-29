@@ -6,7 +6,7 @@
 /*   By: gfredes- <gfredes-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 14:56:08 by gfredes-          #+#    #+#             */
-/*   Updated: 2024/03/29 01:17:24 by gfredes-         ###   ########.fr       */
+/*   Updated: 2024/03/29 03:43:35 by gfredes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	check_args_number(int argc)
 	{
 		printf("Error: wrong number of arguments\n");
 		printf("Usage: ./philo <number_of_philosophers> <time_to_die time_to_eat> \
-			<time_to_sleep> [number_of_times_each_philosopher_must_eat]\n");
+<time_to_sleep> [number_of_times_each_philosopher_must_eat]\n");
 		return (1);
 	}
 	return (0);
@@ -54,10 +54,13 @@ int	check_number_of_philos_and_meals(char *philos, char *meals)
 		printf("Error: philo don't work without philosophers\n");
 		return (1);
 	}
-	if (ft_atoi(meals) < 1)
+	if (meals)
 	{
-		printf("Error: philo don't work without meals\n");
-		return (1);
+		if (ft_atoi(meals) < 1)
+		{
+			printf("Error: philo don't work without meals\n");
+			return (1);
+		}
 	}
 	return (0);
 }

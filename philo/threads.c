@@ -6,7 +6,7 @@
 /*   By: gfredes- <gfredes-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 15:28:36 by gfredes-          #+#    #+#             */
-/*   Updated: 2024/03/29 03:33:43 by gfredes-         ###   ########.fr       */
+/*   Updated: 2024/03/29 03:56:18 by gfredes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ void	*ft_death_checker(void *philo)
 		if (ft_get_time() >= ph->time_of_death && ph->eating == 0)
 		{
 			pthread_mutex_lock(&ph->info->mutex);
-			printf("%lu %d died\n", ft_get_time() - ph->info->start_time, ph->id);
 			ph->info->death = 1;
 			pthread_mutex_unlock(&ph->info->mutex);
+			printf("%lu %d died\n", ft_get_time() - ph->info->start_time, ph->id);
 		}
 		pthread_mutex_unlock(&ph->mutex);
 	}
