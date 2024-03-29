@@ -6,7 +6,7 @@
 /*   By: gfredes- <gfredes-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 15:28:36 by gfredes-          #+#    #+#             */
-/*   Updated: 2024/03/29 03:56:18 by gfredes-         ###   ########.fr       */
+/*   Updated: 2024/03/29 04:56:44 by gfredes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ void	*ft_death_checker(void *philo)
 			pthread_mutex_lock(&ph->info->mutex);
 			ph->info->death = 1;
 			pthread_mutex_unlock(&ph->info->mutex);
-			printf("%lu %d died\n", ft_get_time() - ph->info->start_time, ph->id);
+			printf("%lu %d died\n", ft_get_time() - ph->info->start_time,
+				ph->id);
 		}
 		pthread_mutex_unlock(&ph->mutex);
 	}
@@ -75,7 +76,8 @@ int	ft_check_finished(t_info *info)
 	meal_count = 0;
 	while (i < info->nbr_of_philos)
 	{
-		if (info->philos[i].meals_eaten >= info->nbr_of_times_each_philo_must_eat)
+		if (info->philos[i].meals_eaten
+			>= info->nbr_of_times_each_philo_must_eat)
 			meal_count++;
 		i++;
 	}
@@ -104,7 +106,7 @@ int	ft_threads(t_info *info)
 	}
 	while (i < info->nbr_of_philos)
 	{
-		if (ft_init_thread(&info->threads_id[i], &routine, &info->philos[i]) == 1)
+		if (ft_init_thread(&info->threads_id[i], &routine, &info->philos[i]))
 			return (1);
 		usleep(1);
 		i++;

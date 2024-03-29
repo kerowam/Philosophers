@@ -73,6 +73,7 @@ void	ft_init_philos(t_info *info);
 void	*routine(void *philo);
 int		ft_threads(t_info *info);
 void	*one_philo_routine(void *philo);
+int		ft_check_finished(t_info *info);
 
 //actions.c
 void	ft_eat(t_philo *ph);
@@ -80,8 +81,8 @@ void	ft_sleep(t_philo *ph);
 void	ft_think(t_philo *ph);
 
 //threads_utils.c
-void *ft_end_checker(void *info);
-int 	ft_init_thread(pthread_t *thread, void *(*routine)(void *), void *arg);
-int 	ft_join_thread(pthread_t thread);
-int 	ft_join_threads(t_info *info);
+void	*ft_end_checker(void *info);
+int		ft_init_thread(pthread_t *thread, void *(*routine)(void *), void *arg);
+int		ft_join_thread(pthread_t thread);
+int		ft_join_threads(t_info *info);
 #endif

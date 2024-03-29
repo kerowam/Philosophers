@@ -3,30 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   threads_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gfredes- <gfredes-@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: gfredes- <gfredes-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 04:39:30 by gfredes-          #+#    #+#             */
-/*   Updated: 2024/03/29 04:39:30 by gfredes-         ###   ########.fr       */
+/*   Updated: 2024/03/29 04:50:44 by gfredes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void *ft_end_checker(void *info)
+void	*ft_end_checker(void *info)
 {
-	t_info *inf;
+	t_info	*inf;
 
 	inf = (t_info *)info;
 	while (1)
 	{
 		if (ft_check_finished(inf) == 1 || inf->death == 1)
-			break;
+			break ;
 		usleep(10);
 	}
 	return ((void *)0);
 }
 
-int ft_init_thread(pthread_t *thread, void *(*routine)(void *), void *arg)
+int	ft_init_thread(pthread_t *thread, void *(*routine)(void *), void *arg)
 {
 	if (pthread_create(thread, NULL, routine, arg))
 	{
@@ -36,7 +36,7 @@ int ft_init_thread(pthread_t *thread, void *(*routine)(void *), void *arg)
 	return (0);
 }
 
-int ft_join_thread(pthread_t thread)
+int	ft_join_thread(pthread_t thread)
 {
 	if (pthread_join(thread, NULL))
 	{
@@ -46,9 +46,9 @@ int ft_join_thread(pthread_t thread)
 	return (0);
 }
 
-int ft_join_threads(t_info *info)
+int	ft_join_threads(t_info *info)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < info->nbr_of_philos)

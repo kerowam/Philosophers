@@ -36,7 +36,8 @@ void	ft_end(t_info *info)
 void	ft_one_philo(t_info *info)
 {
 	info->start_time = ft_get_time();
-	if (pthread_create(&info->threads_id[0], NULL, &one_philo_routine, &info->philos[0]))
+	if (pthread_create(&info->threads_id[0], NULL, &one_philo_routine,
+			&info->philos[0]))
 	{
 		printf("Error: thread creation failed\n");
 		return ;
