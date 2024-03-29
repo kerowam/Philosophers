@@ -6,7 +6,7 @@
 /*   By: gfredes- <gfredes-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 19:50:44 by gfredes-          #+#    #+#             */
-/*   Updated: 2024/03/29 14:55:11 by gfredes-         ###   ########.fr       */
+/*   Updated: 2024/03/29 22:18:07 by gfredes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +22,17 @@ void	ft_eat(t_philo *ph)
 	if (ph->info->death == 0 && ph->info->finished == 0)
 		printf("%lu %d has taken a fork\n",
 			ft_get_time() - ph->info->start_time, ph->id);
-	ph->time_of_death = ft_get_time() + ph->info->time_to_die;
-	ph->meals_eaten++;
-	ph->eating = 1;
 	pthread_mutex_lock(&ph->info->print);
+	ph->eating = 1;
 	if (ph->info->death == 0 && ph->info->finished == 0)
 		printf("%lu %d is eating\n", ft_get_time() - ph->info->start_time,
 			ph->id);
 	pthread_mutex_unlock(&ph->info->print);
-	usleep(ph->info->time_to_eat * 1000);
 	pthread_mutex_unlock(ph->left_fork);
 	pthread_mutex_unlock(ph->right_fork);
+	ph->time_of_death = ft_get_time() + ph->info->time_to_die;
+	ph->meals_eaten++;
+	usleep(ph->info->time_to_eat * 1000);
 	ph->eating = 0;
 }
 
@@ -50,7 +50,11 @@ void	ft_think(t_philo *ph)
 {
 	pthread_mutex_lock(&ph->info->print);
 	if (ph->info->death == 0 && ph->info->finished == 0)
+	{
 		printf("%lu %d is thinking\n", ft_get_time() - ph->info->start_time,
 			ph->id);
+		/*while (ft_get_time() < (ph->time_of_death - ph->info->time_to_eat))
+			usleep(0);*/
+	}
 	pthread_mutex_unlock(&ph->info->print);
 }

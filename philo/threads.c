@@ -6,7 +6,7 @@
 /*   By: gfredes- <gfredes-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 15:28:36 by gfredes-          #+#    #+#             */
-/*   Updated: 2024/03/29 15:15:10 by gfredes-         ###   ########.fr       */
+/*   Updated: 2024/03/29 22:09:28 by gfredes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,9 @@ void	*ft_death_checker(void *philo)
 			ph->info->death = 1;
 			pthread_mutex_unlock(&ph->info->mutex);
 			pthread_mutex_lock(&ph->info->print);
-			printf("%lu %d died\n", ft_get_time() - ph->info->start_time,
-				ph->id);
+			if (ph->info->finished == 0)
+				printf("%lu %d died\n", ft_get_time() - ph->info->start_time,
+					ph->id);
 			pthread_mutex_unlock(&ph->info->print);
 		}
 	}
@@ -46,6 +47,14 @@ void	*one_philo_routine(void *philo)
 	return ((void *)0);
 }
 
+void	ft_add_delay(t_philo *ph)
+{
+	useconds_t	time;
+
+	time = ph->info->time_to_eat * 1000;
+	usleep(time);
+}
+
 void	*routine(void *philo)
 {
 	t_philo	*ph;
@@ -54,14 +63,16 @@ void	*routine(void *philo)
 	if (pthread_create(&ph->thread, NULL, &ft_death_checker, (void *)ph))
 		return ((void *)1);
 	ph->time_of_death = ph->info->start_time + ph->info->time_to_die;
+	if (ph->id % 2 == 0)
+		ft_add_delay(ph);
 	while (ph->info->death == 0 && ph->info->finished == 0)
 	{
-		if (ph->info->death == 0 && ph->info->finished == 0)
-			ft_think(ph);
 		if (ph->info->death == 0 && ph->info->finished == 0)
 			ft_eat(ph);
 		if (ph->info->death == 0 && ph->info->finished == 0)
 			ft_sleep(ph);
+		if (ph->info->death == 0 && ph->info->finished == 0)
+			ft_think(ph);
 	}
 	if (pthread_join(ph->thread, NULL))
 		return ((void *)1);
