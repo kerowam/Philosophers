@@ -6,7 +6,7 @@
 /*   By: gfredes- <gfredes-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 15:28:36 by gfredes-          #+#    #+#             */
-/*   Updated: 2024/03/29 04:56:44 by gfredes-         ###   ########.fr       */
+/*   Updated: 2024/03/29 14:03:14 by gfredes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void	*routine(void *philo)
 	ph = (t_philo *)philo;
 	if (pthread_create(&ph->thread, NULL, &ft_death_checker, (void *)ph))
 		return ((void *)1);
+	ph->time_of_death = ph->info->start_time + ph->info->time_to_die;
 	while (ph->info->death == 0 && ph->info->finished == 0)
 	{
 		if (ph->info->death == 0 && ph->info->finished == 0)
