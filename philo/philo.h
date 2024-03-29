@@ -20,20 +20,20 @@
 # include <sys/time.h>
 
 
-struct s_philo;
+struct	s_philo;
 
 typedef struct s_info
 {
-	int							nbr_of_philos;
-	time_t					start_time;
-	time_t					time_to_die;
-	time_t 					time_to_eat;
-	time_t					time_to_sleep;
-	int							nbr_of_times_each_philo_must_eat;
+	int				nbr_of_philos;
+	time_t			start_time;
+	time_t			time_to_die;
+	time_t			time_to_eat;
+	time_t			time_to_sleep;
+	int				nbr_of_times_each_philo_must_eat;
 	struct s_philo	*philos;
-	int							death;
-	int							finished;
-	pthread_t 			*threads_id;
+	int				death;
+	int				finished;
+	pthread_t		*threads_id;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	print;
 	pthread_mutex_t	mutex;
@@ -41,27 +41,27 @@ typedef struct s_info
 
 typedef struct s_philo
 {
-	int							id;
-	pthread_t				thread;
+	int				id;
+	pthread_t		thread;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
-	pthread_mutex_t mutex;
-	t_info					*info;
-	time_t					time_of_death;
-	int							meals_eaten;
-	int							status;
-	int							eating;
+	pthread_mutex_t	mutex;
+	t_info			*info;
+	time_t			time_of_death;
+	int				meals_eaten;
+	int				status;
+	int				eating;
 }					t_philo;
 
 //check_args.c
-int	check_args_number(int argc);
-int	check_all_args_are_numbers(char **argv);
-int	check_number_of_philosophers(char *argv);
-int	check_args(int argc, char **argv);
+int		check_args_number(int argc);
+int		check_all_args_are_numbers(char **argv);
+int		check_number_of_philosophers(char *argv);
+int		check_args(int argc, char **argv);
 // int	check_max_int(char **argv);
 
 //utils.c
-int	ft_atoi(const char *str);
+int		ft_atoi(const char *str);
 
 //init.c
 time_t	ft_get_time(void);	
@@ -70,8 +70,9 @@ void	print_info(t_info *info);
 void	ft_init_philos(t_info *info);
 
 //threads.c
-void *routine(void *philo);
-void ft_threads(t_info *info);
+void	*routine(void *philo);
+int		ft_threads(t_info *info);
+void	*one_philo_routine(void *philo);
 
 // actions.c
 void	ft_eat(t_philo *ph);

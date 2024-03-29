@@ -6,7 +6,7 @@
 /*   By: gfredes- <gfredes-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 16:14:37 by gfredes-          #+#    #+#             */
-/*   Updated: 2024/03/29 00:43:27 by gfredes-         ###   ########.fr       */
+/*   Updated: 2024/03/29 01:18:02 by gfredes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 time_t	ft_get_time(void)
 {
-	struct timeval time;
+	struct timeval	time;
 
 	gettimeofday(&time, NULL);
 	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
@@ -22,7 +22,7 @@ time_t	ft_get_time(void)
 
 int	init_forks(t_info *info)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < info->nbr_of_philos)
@@ -82,7 +82,7 @@ void	ft_set_forks(t_info *info)
 
 void	ft_init_philos(t_info *info)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	info->philos = malloc(sizeof(t_philo) * info->nbr_of_philos);

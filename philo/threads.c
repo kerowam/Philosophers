@@ -6,17 +6,52 @@
 /*   By: gfredes- <gfredes-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 15:28:36 by gfredes-          #+#    #+#             */
-/*   Updated: 2024/03/29 00:48:22 by gfredes-         ###   ########.fr       */
+/*   Updated: 2024/03/29 03:04:13 by gfredes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	*ft_death_checker(void *philo)
+{
+	t_philo	*ph;
+
+	ph = (t_philo *)philo;
+	while (ph->info->death == 0)
+	{
+		pthread_mutex_lock(&ph->mutex);
+		if (ft_get_time() >= ph->time_of_death && ph->eating == 0)
+		{
+			pthread_mutex_lock(&ph->info->mutex);
+			printf("%lu %d died\n", ft_get_time() - ph->info->start_time, ph->id);
+			ph->info->death = 1;
+			pthread_mutex_unlock(&ph->info->mutex);
+		}
+		pthread_mutex_unlock(&ph->mutex);
+	}
+	return ((void *)0);
+}
+
+void	*one_philo_routine(void *philo)
+{
+	t_philo	*ph;
+
+	ph = (t_philo *)philo;
+	printf("%lu %d has taken a fork\n", ft_get_time() - ph->info->start_time, \
+		ph->id);
+	while (ft_get_time() < ph->time_of_death)
+		usleep(0);
+	printf("%lu %d died\n", ft_get_time() - ph->info->start_time, ph->id);
+	return ((void *)0);
+}
 
 void	*routine(void *philo)
 {
 	t_philo	*ph;
 
 	ph = (t_philo *)philo;
+	if (pthread_create(&ph->thread, NULL, &ft_death_checker, (void *)ph))
+		return ((void *)1);
 	while (ph->info->death == 0 && ph->info->finished == 0)
 	{
 		if (ph->info->death == 0 && ph->info->finished == 0)
@@ -26,7 +61,9 @@ void	*routine(void *philo)
 		if (ph->info->death == 0 && ph->info->finished == 0)
 			ft_sleep(ph);
 	}
-	return (NULL);
+	if (pthread_join(ph->thread, NULL))
+		return ((void *)1);
+	return ((void *)0);
 }
 
 void	*ft_end_checker(void *info)
@@ -55,11 +92,15 @@ void	*ft_end_checker(void *info)
 			break ;
 	}
 	if (meal_count == inf->nbr_of_philos)
+	{
+		pthread_mutex_lock(&inf->mutex);
 		inf->finished = 1;
-	return (NULL);
+		pthread_mutex_unlock(&inf->mutex);
+	}
+	return ((void *)0);
 }
 
-void	ft_threads(t_info *info)
+int	ft_threads(t_info *info)
 {
 	int			i;
 	pthread_t	checker_thread;
@@ -71,7 +112,7 @@ void	ft_threads(t_info *info)
 		if (pthread_create(&checker_thread, NULL, &ft_end_checker, info))
 		{
 			printf("Error: thread creation failed\n");
-			return ;
+			return (1);
 		}
 	}
 	while (i < info->nbr_of_philos)
@@ -79,7 +120,7 @@ void	ft_threads(t_info *info)
 		if (pthread_create(&info->threads_id[i], NULL, &routine, &info->philos[i]))
 		{
 			printf("Error: thread creation failed\n");
-			return ;
+			return (1);
 		}
 		usleep(1);
 		i++;
@@ -90,8 +131,9 @@ void	ft_threads(t_info *info)
 		if (pthread_join(info->threads_id[i], NULL))
 		{
 			printf("Error: thread join failed\n");
-			return ;
+			return (1);
 		}
 		i++;
 	}
+	return (0);
 }

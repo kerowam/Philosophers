@@ -14,7 +14,7 @@
 
 void	ft_end(t_info *info)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < info->nbr_of_philos)
@@ -36,14 +36,12 @@ void	ft_end(t_info *info)
 void	ft_one_philo(t_info *info)
 {
 	info->start_time = ft_get_time();
-	if (pthread_create(&info->threads_id[0], NULL, &routine, &info->philos[0])) ///??
+	if (pthread_create(&info->threads_id[0], NULL, &one_philo_routine, &info->philos[0]))
 	{
 		printf("Error: thread creation failed\n");
 		return ;
 	}
 	pthread_join(info->threads_id[0], NULL);
-	while (info->death == 0)
-		usleep(0);
 	ft_end(info);
 	return ;
 }
@@ -63,7 +61,10 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 	else
-		ft_threads(&info);
+	{
+		if (ft_threads(&info))
+			return (1);
+	}
 	ft_end(&info);
 	return (0);
 }
