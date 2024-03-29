@@ -6,7 +6,7 @@
 /*   By: gfredes- <gfredes-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 15:28:36 by gfredes-          #+#    #+#             */
-/*   Updated: 2024/03/29 03:04:13 by gfredes-         ###   ########.fr       */
+/*   Updated: 2024/03/29 03:33:43 by gfredes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,13 +83,13 @@ void	*ft_end_checker(void *info)
 				meal_count++;
 			i++;
 		}
-		if (i == inf->nbr_of_philos && meal_count < inf->nbr_of_philos)
+		if (meal_count == inf->nbr_of_philos || inf->death == 1)
+			break ;
+		else if (i == inf->nbr_of_philos && meal_count < inf->nbr_of_philos)
 		{
 			i = 0;
 			meal_count = 0;
 		}
-		else if (meal_count == inf->nbr_of_philos)
-			break ;
 	}
 	if (meal_count == inf->nbr_of_philos)
 	{
@@ -134,6 +134,14 @@ int	ft_threads(t_info *info)
 			return (1);
 		}
 		i++;
+	}
+	if (info->nbr_of_times_each_philo_must_eat > 0)
+	{
+		if (pthread_join(checker_thread, NULL))
+		{
+			printf("Error: thread join failed\n");
+			return (1);
+		}
 	}
 	return (0);
 }
