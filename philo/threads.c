@@ -66,38 +66,28 @@ void	*routine(void *philo)
 	return ((void *)0);
 }
 
-void	*ft_end_checker(void *info)
+int	ft_check_finished(t_info *info)
 {
-	t_info	*inf;
-	int		i;
-	int		meal_count;
+	int	i;
+	int	meal_count;
 
-	inf = (t_info *)info;
 	i = 0;
 	meal_count = 0;
-	while (1)
+	while (i < info->nbr_of_philos)
 	{
-		while (i < inf->nbr_of_philos)
-		{
-			if (inf->philos[i].meals_eaten >= inf->nbr_of_times_each_philo_must_eat)
-				meal_count++;
-			i++;
-		}
-		if (meal_count == inf->nbr_of_philos || inf->death == 1)
-			break ;
-		else if (i == inf->nbr_of_philos && meal_count < inf->nbr_of_philos)
-		{
-			i = 0;
-			meal_count = 0;
-		}
+		if (info->philos[i].meals_eaten >= info->nbr_of_times_each_philo_must_eat)
+			meal_count++;
+		i++;
 	}
-	if (meal_count == inf->nbr_of_philos)
+	if (meal_count == info->nbr_of_philos)
 	{
-		pthread_mutex_lock(&inf->mutex);
-		inf->finished = 1;
-		pthread_mutex_unlock(&inf->mutex);
+		pthread_mutex_lock(&info->mutex);
+		info->finished = 1;
+		pthread_mutex_unlock(&info->mutex);
 	}
-	return ((void *)0);
+	if (info->finished == 1)
+		return (1);
+	return (0);
 }
 
 int	ft_threads(t_info *info)
@@ -109,39 +99,22 @@ int	ft_threads(t_info *info)
 	info->start_time = ft_get_time();
 	if (info->nbr_of_times_each_philo_must_eat > 0)
 	{
-		if (pthread_create(&checker_thread, NULL, &ft_end_checker, info))
-		{
-			printf("Error: thread creation failed\n");
+		if (ft_init_thread(&checker_thread, &ft_end_checker, info) == 1)
 			return (1);
-		}
 	}
 	while (i < info->nbr_of_philos)
 	{
-		if (pthread_create(&info->threads_id[i], NULL, &routine, &info->philos[i]))
-		{
-			printf("Error: thread creation failed\n");
+		if (ft_init_thread(&info->threads_id[i], &routine, &info->philos[i]) == 1)
 			return (1);
-		}
 		usleep(1);
 		i++;
 	}
-	i = 0;
-	while (i < info->nbr_of_philos)
-	{
-		if (pthread_join(info->threads_id[i], NULL))
-		{
-			printf("Error: thread join failed\n");
-			return (1);
-		}
-		i++;
-	}
+	if (ft_join_threads(info) == 1)
+		return (1);
 	if (info->nbr_of_times_each_philo_must_eat > 0)
 	{
-		if (pthread_join(checker_thread, NULL))
-		{
-			printf("Error: thread join failed\n");
+		if (ft_join_thread(checker_thread) == 1)
 			return (1);
-		}
 	}
 	return (0);
 }

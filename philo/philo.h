@@ -74,9 +74,14 @@ void	*routine(void *philo);
 int		ft_threads(t_info *info);
 void	*one_philo_routine(void *philo);
 
-// actions.c
+//actions.c
 void	ft_eat(t_philo *ph);
 void	ft_sleep(t_philo *ph);
 void	ft_think(t_philo *ph);
 
+//threads_utils.c
+void *ft_end_checker(void *info);
+int 	ft_init_thread(pthread_t *thread, void *(*routine)(void *), void *arg);
+int 	ft_join_thread(pthread_t thread);
+int 	ft_join_threads(t_info *info);
 #endif

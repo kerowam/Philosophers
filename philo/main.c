@@ -54,7 +54,6 @@ int	main(int argc, char **argv)
 		return (1);
 	ft_get_info(&info, argv);
 	ft_init_philos(&info);
-	//print_info(&info);
 	if (info.nbr_of_philos == 1)
 	{
 		ft_one_philo(&info);
