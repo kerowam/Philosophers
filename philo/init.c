@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gfredes- <gfredes-@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: gfredes- <gfredes-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 16:14:37 by gfredes-          #+#    #+#             */
-/*   Updated: 2024/03/25 16:14:37 by gfredes-         ###   ########.fr       */
+/*   Updated: 2024/03/29 00:43:27 by gfredes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	ft_get_info(t_info *info, char **argv)
 
 void	ft_set_forks(t_info *info)
 {
-	int i;
+	int	i;
 
 	i = 1;
 	info->philos[0].left_fork = &info->forks[0];
@@ -77,7 +77,7 @@ void	ft_set_forks(t_info *info)
 		info->philos[i].right_fork = &info->forks[i - 1];
 		i++;
 	}
-	return (0);
+	return ;
 }
 
 void	ft_init_philos(t_info *info)

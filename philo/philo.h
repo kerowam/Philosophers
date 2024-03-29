@@ -15,6 +15,7 @@
 
 # include <unistd.h>
 # include <stdio.h>
+# include <stdlib.h>
 # include <pthread.h>
 # include <sys/time.h>
 
@@ -53,20 +54,20 @@ typedef struct s_philo
 }					t_philo;
 
 //check_args.c
-int check_args_number(int argc);
-int check_all_args_are_numbers(char **argv);
-int check_number_of_philosophers(char *argv);
-int check_args(int argc, char **argv);
+int	check_args_number(int argc);
+int	check_all_args_are_numbers(char **argv);
+int	check_number_of_philosophers(char *argv);
+int	check_args(int argc, char **argv);
 // int	check_max_int(char **argv);
 
 //utils.c
-int ft_atoi(const char *str);
+int	ft_atoi(const char *str);
 
 //init.c
-time_t	ft_get_time(void);
-void		ft_get_info(t_info *info, char **argv);
-void		print_info(t_info *info);
-void		ft_init_philos(t_info *info);
+time_t	ft_get_time(void);	
+int		ft_get_info(t_info *info, char **argv);
+void	print_info(t_info *info);
+void	ft_init_philos(t_info *info);
 
 //threads.c
 void *routine(void *philo);

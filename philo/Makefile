@@ -21,6 +21,7 @@ SRC = main.c\
 	utils.c\
 	init.c\
 	threads.c\
+	actions.c\
 
 OBJT = $(SRC:.c=.o)
 

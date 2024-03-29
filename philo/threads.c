@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   threads.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gfredes- <gfredes-@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: gfredes- <gfredes-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 15:28:36 by gfredes-          #+#    #+#             */
-/*   Updated: 2024/03/26 15:28:36 by gfredes-         ###   ########.fr       */
+/*   Updated: 2024/03/29 00:48:22 by gfredes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	*routine(void *philo)
 	return (NULL);
 }
 
-void	ft_end_checker(void *info)
+void	*ft_end_checker(void *info)
 {
 	t_info	*inf;
 	int		i;
@@ -42,7 +42,7 @@ void	ft_end_checker(void *info)
 	{
 		while (i < inf->nbr_of_philos)
 		{
-			if (inf->philos[i].nbr_of_meals >= inf->nbr_of_times_each_philo_must_eat)
+			if (inf->philos[i].meals_eaten >= inf->nbr_of_times_each_philo_must_eat)
 				meal_count++;
 			i++;
 		}
@@ -56,11 +56,12 @@ void	ft_end_checker(void *info)
 	}
 	if (meal_count == inf->nbr_of_philos)
 		inf->finished = 1;
+	return (NULL);
 }
 
 void	ft_threads(t_info *info)
 {
-	int				i;
+	int			i;
 	pthread_t	checker_thread;
 
 	i = 0;
@@ -80,13 +81,13 @@ void	ft_threads(t_info *info)
 			printf("Error: thread creation failed\n");
 			return ;
 		}
-		ft_usleep(1);
+		usleep(1);
 		i++;
 	}
 	i = 0;
 	while (i < info->nbr_of_philos)
 	{
-		if (pthread_join(info->threads_id[i], NULL));
+		if (pthread_join(info->threads_id[i], NULL))
 		{
 			printf("Error: thread join failed\n");
 			return ;

@@ -57,12 +57,13 @@ int	main(int argc, char **argv)
 	ft_get_info(&info, argv);
 	ft_init_philos(&info);
 	//print_info(&info);
-	if (info->nbr_of_philos == 1)
+	if (info.nbr_of_philos == 1)
 	{
 		ft_one_philo(&info);
 		return (1);
 	}
 	else
 		ft_threads(&info);
+	ft_end(&info);
 	return (0);
 }
