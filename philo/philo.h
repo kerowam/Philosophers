@@ -62,6 +62,7 @@ int		check_args(int argc, char **argv);
 
 //utils.c
 int		ft_atoi(const char *str);
+void	ft_usleep(t_philo *ph, useconds_t time);
 
 //init.c
 time_t	ft_get_time(void);	

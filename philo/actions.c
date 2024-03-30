@@ -6,7 +6,7 @@
 /*   By: gfredes- <gfredes-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 19:50:44 by gfredes-          #+#    #+#             */
-/*   Updated: 2024/03/29 22:18:07 by gfredes-         ###   ########.fr       */
+/*   Updated: 2024/03/30 23:18:53 by gfredes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,11 @@ void	ft_eat(t_philo *ph)
 		printf("%lu %d is eating\n", ft_get_time() - ph->info->start_time,
 			ph->id);
 	pthread_mutex_unlock(&ph->info->print);
-	pthread_mutex_unlock(ph->left_fork);
-	pthread_mutex_unlock(ph->right_fork);
 	ph->time_of_death = ft_get_time() + ph->info->time_to_die;
 	ph->meals_eaten++;
-	usleep(ph->info->time_to_eat * 1000);
+	ft_usleep(ph, ph->info->time_to_eat * 1000);
+	pthread_mutex_unlock(ph->left_fork);
+	pthread_mutex_unlock(ph->right_fork);
 	ph->eating = 0;
 }
 
@@ -43,7 +43,7 @@ void	ft_sleep(t_philo *ph)
 		printf("%lu %d is sleeping\n", ft_get_time() - ph->info->start_time,
 			ph->id);
 	pthread_mutex_unlock(&ph->info->print);
-	usleep(ph->info->time_to_sleep * 1000);
+	ft_usleep(ph, ph->info->time_to_sleep * 1000);
 }
 
 void	ft_think(t_philo *ph)
