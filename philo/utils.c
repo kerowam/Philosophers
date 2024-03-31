@@ -6,7 +6,7 @@
 /*   By: gfredes- <gfredes-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 15:09:24 by gfredes-          #+#    #+#             */
-/*   Updated: 2024/03/30 23:17:32 by gfredes-         ###   ########.fr       */
+/*   Updated: 2024/03/31 00:56:53 by gfredes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,23 +38,35 @@ int	ft_atoi(const char *str)
 	return (nb);
 }
 
-void	ft_usleep(t_philo *ph, useconds_t time)
+void	ft_usleep(t_philo *ph, long time)
 {
 	struct timeval	start;
 	struct timeval	end;
-	useconds_t		time_passed;
+	long			time_passed;
 
 	time_passed = 0;
 	gettimeofday(&start, NULL);
-	while (time_passed < time && ph->info->death == 0)
+	while (time_passed < time)
 	{
-		gettimeofday(&end, NULL);
-		time_passed = ((end.tv_sec - start.tv_sec) * 1000000)
-			+ (end.tv_usec - start.tv_usec);
-		usleep(0);
-		if (ph->info->death == 1)
+		if (ph->info->death == 0)
+		{
+			gettimeofday(&end, NULL);
+			time_passed = ((end.tv_sec - start.tv_sec) * 1000000)
+				+ (end.tv_usec - start.tv_usec);
+			usleep(0);
+		}
+		else
 			break ;
 	}
+}
+
+void	ft_add_delay(t_philo *ph)
+{
+	long	time;
+
+	time = ((ph->info->time_to_eat) / 2) - 100;
+	ft_think(ph);
+	ft_usleep(ph, time * 1000);
 }
 
 /*void	print_info(t_info *info)

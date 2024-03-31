@@ -6,7 +6,7 @@
 /*   By: gfredes- <gfredes-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 15:28:36 by gfredes-          #+#    #+#             */
-/*   Updated: 2024/03/30 23:18:29 by gfredes-         ###   ########.fr       */
+/*   Updated: 2024/03/31 00:46:12 by gfredes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	*ft_death_checker(void *philo)
 	t_philo	*ph;
 
 	ph = (t_philo *)philo;
-	while (ph->info->death == 0)
+	while (ph->info->death == 0 && ph->info->finished == 0)
 	{
 		if (ft_get_time() >= ph->time_of_death && ph->eating == 0)
 		{
@@ -51,15 +51,6 @@ void	*one_philo_routine(void *philo)
 	return ((void *)0);
 }
 
-void	ft_add_delay(t_philo *ph)
-{
-	useconds_t	time;
-
-	time = ((ph->info->time_to_eat * 1000) / 2) - 100;
-	ft_think(ph);
-	ft_usleep(ph, time);
-}
-
 void	*routine(void *philo)
 {
 	t_philo	*ph;
@@ -68,7 +59,9 @@ void	*routine(void *philo)
 	if (pthread_create(&ph->thread, NULL, &ft_death_checker, (void *)ph))
 		return ((void *)1);
 	ph->time_of_death = ph->info->start_time + ph->info->time_to_die;
-	if (ph->id % 2 == 0)
+	if (ph->info->time_to_die == 0)
+		ft_die(ph);
+	else if (ph->id % 2 == 0)
 		ft_add_delay(ph);
 	while (ph->info->death == 0 && ph->info->finished == 0)
 	{
@@ -125,7 +118,7 @@ int	ft_threads(t_info *info)
 	{
 		if (ft_init_thread(&info->threads_id[i], &routine, &info->philos[i]))
 			return (1);
-		usleep(1);
+		usleep(10);
 		i++;
 	}
 	if (ft_join_threads(info) == 1)

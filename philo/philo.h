@@ -62,7 +62,8 @@ int		check_args(int argc, char **argv);
 
 //utils.c
 int		ft_atoi(const char *str);
-void	ft_usleep(t_philo *ph, useconds_t time);
+void	ft_usleep(t_philo *ph, long time);
+void	ft_add_delay(t_philo *ph);
 
 //init.c
 time_t	ft_get_time(void);	
@@ -80,6 +81,7 @@ int		ft_check_finished(t_info *info);
 void	ft_eat(t_philo *ph);
 void	ft_sleep(t_philo *ph);
 void	ft_think(t_philo *ph);
+void	ft_die(t_philo *ph);
 
 //threads_utils.c
 void	*ft_end_checker(void *info);

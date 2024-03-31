@@ -6,11 +6,26 @@
 /*   By: gfredes- <gfredes-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 19:50:44 by gfredes-          #+#    #+#             */
-/*   Updated: 2024/03/30 23:18:53 by gfredes-         ###   ########.fr       */
+/*   Updated: 2024/03/31 00:04:23 by gfredes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	ft_die(t_philo *ph)
+{
+	pthread_mutex_lock(&ph->info->mutex);
+	if (ph->info->finished == 0 && ph->info->death == 0)
+	{
+		ph->info->death = 1;
+		pthread_mutex_unlock(&ph->info->mutex);
+		pthread_mutex_lock(&ph->info->print);
+		printf("%lu %d died\n", ft_get_time() - ph->info->start_time, ph->id);
+		pthread_mutex_unlock(&ph->info->print);
+	}
+	else
+		pthread_mutex_unlock(&ph->info->mutex);
+}
 
 void	ft_eat(t_philo *ph)
 {
@@ -43,7 +58,8 @@ void	ft_sleep(t_philo *ph)
 		printf("%lu %d is sleeping\n", ft_get_time() - ph->info->start_time,
 			ph->id);
 	pthread_mutex_unlock(&ph->info->print);
-	ft_usleep(ph, ph->info->time_to_sleep * 1000);
+	if (ph->info->time_to_sleep > 0)
+		ft_usleep(ph, ph->info->time_to_sleep * 1000);
 }
 
 void	ft_think(t_philo *ph)
