@@ -6,7 +6,7 @@
 /*   By: gfredes- <gfredes-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 15:28:36 by gfredes-          #+#    #+#             */
-/*   Updated: 2024/03/30 23:18:29 by gfredes-         ###   ########.fr       */
+/*   Updated: 2024/04/06 21:19:50 by gfredes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	*ft_death_checker(void *philo)
 	t_philo	*ph;
 
 	ph = (t_philo *)philo;
-	while (ph->info->death == 0)
+	while (ph->info->death == 0 && ph->info->finished == 0)
 	{
 		if (ft_get_time() >= ph->time_of_death && ph->eating == 0)
 		{
@@ -29,9 +29,9 @@ void	*ft_death_checker(void *philo)
 				pthread_mutex_lock(&ph->info->print);
 				printf("%lu %d died\n", ft_get_time() - ph->info->start_time,
 					ph->id);
-				//usleep(1000);
 				pthread_mutex_unlock(&ph->info->print);
-			} else
+			}
+			else
 				pthread_mutex_unlock(&ph->info->mutex);
 		}
 	}
@@ -51,15 +51,6 @@ void	*one_philo_routine(void *philo)
 	return ((void *)0);
 }
 
-void	ft_add_delay(t_philo *ph)
-{
-	useconds_t	time;
-
-	time = ((ph->info->time_to_eat * 1000) / 2) - 100;
-	ft_think(ph);
-	ft_usleep(ph, time);
-}
-
 void	*routine(void *philo)
 {
 	t_philo	*ph;
@@ -67,6 +58,8 @@ void	*routine(void *philo)
 	ph = (t_philo *)philo;
 	if (pthread_create(&ph->thread, NULL, &ft_death_checker, (void *)ph))
 		return ((void *)1);
+	while (ft_get_time() < ph->info->start_time)
+		usleep(0);
 	ph->time_of_death = ph->info->start_time + ph->info->time_to_die;
 	if (ph->id % 2 == 0)
 		ft_add_delay(ph);
@@ -115,7 +108,10 @@ int	ft_threads(t_info *info)
 	pthread_t	checker_thread;
 
 	i = 0;
-	info->start_time = ft_get_time();
+	//if (info->nbr_of_philos > 50)
+	//	info->start_time = ft_get_time() + info->nbr_of_philos;
+	//else
+		info->start_time = ft_get_time();
 	if (info->nbr_of_times_each_philo_must_eat > 0)
 	{
 		if (ft_init_thread(&checker_thread, &ft_end_checker, info) == 1)
@@ -125,7 +121,7 @@ int	ft_threads(t_info *info)
 	{
 		if (ft_init_thread(&info->threads_id[i], &routine, &info->philos[i]))
 			return (1);
-		usleep(1);
+		usleep(100);
 		i++;
 	}
 	if (ft_join_threads(info) == 1)

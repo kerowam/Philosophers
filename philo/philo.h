@@ -54,15 +54,16 @@ typedef struct s_philo
 }					t_philo;
 
 //check_args.c
-int		check_args_number(int argc);
 int		check_all_args_are_numbers(char **argv);
 int		check_number_of_philosophers(char *argv);
 int		check_args(int argc, char **argv);
-// int	check_max_int(char **argv);
+int		check_max_int(char **argv);
 
 //utils.c
 int		ft_atoi(const char *str);
 void	ft_usleep(t_philo *ph, useconds_t time);
+void	ft_check_info(t_info *info);
+void	ft_add_delay(t_philo *ph);
 
 //init.c
 time_t	ft_get_time(void);	

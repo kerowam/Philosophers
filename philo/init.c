@@ -6,7 +6,7 @@
 /*   By: gfredes- <gfredes-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 16:14:37 by gfredes-          #+#    #+#             */
-/*   Updated: 2024/03/29 01:18:02 by gfredes-         ###   ########.fr       */
+/*   Updated: 2024/04/04 17:54:06 by gfredes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ int	ft_get_info(t_info *info, char **argv)
 		info->nbr_of_times_each_philo_must_eat = ft_atoi(argv[5]);
 	else
 		info->nbr_of_times_each_philo_must_eat = -1;
+	ft_check_info(info);
 	info->death = 0;
 	info->finished = 0;
 	info->start_time = ft_get_time();
