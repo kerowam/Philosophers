@@ -29,8 +29,8 @@ OBJT = $(SRC:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJT)
-	gcc -g  $(CFLAGS) $(SRC) -o $(NAME) -lpthread 
-#-fsanitize=thread
+	gcc -g -fsanitize=thread $(CFLAGS) $(SRC) -o $(NAME) -lpthread 
+
 clean:
 	$(CLEAN) $(OBJT)
 

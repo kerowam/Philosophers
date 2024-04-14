@@ -6,7 +6,7 @@
 /*   By: gfredes- <gfredes-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 15:28:36 by gfredes-          #+#    #+#             */
-/*   Updated: 2024/04/14 20:54:47 by gfredes-         ###   ########.fr       */
+/*   Updated: 2024/04/14 21:01:41 by gfredes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,23 +21,23 @@ void	*ft_death_checker(void *philo)
 	while (ph->info->death == 0 && ph->info->finished == 0)
 	{
 		//pthread_mutex_unlock(&ph->info->mutex);
-		//pthread_mutex_lock(&ph->info->mutex);
+		pthread_mutex_lock(&ph->info->mutex);
 		if (ft_get_time() >= ph->time_of_death && ph->eating == 0)
 		{
+			pthread_mutex_unlock(&ph->info->mutex);
 			if (ph->info->finished == 0 && ph->info->death == 0)
 			{
 				ph->info->death = 1;
-				//pthread_mutex_unlock(&ph->info->mutex);
 				pthread_mutex_lock(&ph->info->print);
 				printf("%lu %d died\n", ft_get_time() - ph->info->start_time,
 					ph->id);
 				pthread_mutex_unlock(&ph->info->print);
 			}
-			else
-				pthread_mutex_unlock(&ph->info->mutex);
+			//else
 		}
+		pthread_mutex_unlock(&ph->info->mutex);
 	}
-	//pthread_mutex_unlock(&ph->info->mutex);
+	pthread_mutex_unlock(&ph->info->mutex);
 	return ((void *)0);
 }
 
