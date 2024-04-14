@@ -6,7 +6,7 @@
 /*   By: gfredes- <gfredes-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 15:09:24 by gfredes-          #+#    #+#             */
-/*   Updated: 2024/04/04 18:14:25 by gfredes-         ###   ########.fr       */
+/*   Updated: 2024/04/14 18:58:03 by gfredes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,14 @@ void	ft_usleep(t_philo *ph, useconds_t time)
 
 	time_passed = 0;
 	gettimeofday(&start, NULL);
-	while (time_passed < time && ph->info->death == 0
+	usleep(time * 920);
+	while (time_passed < time * 1000 && ph->info->death == 0
 		&& ph->info->finished == 0)
 	{
 		gettimeofday(&end, NULL);
 		time_passed = ((end.tv_sec - start.tv_sec) * 1000000)
 			+ (end.tv_usec - start.tv_usec);
-		usleep(0);
+		usleep(time * 3);
 		if (ph->info->death == 1)
 			break ;
 	}
@@ -71,9 +72,9 @@ void	ft_add_delay(t_philo *ph)
 	useconds_t	time;
 
 	if (ph->info->time_to_eat > 0)
-		time = ((ph->info->time_to_eat * 1000) / 2) - 100;
+		time = ((ph->info->time_to_eat) / 2);
 	else
-		time = 1000;
+		time = 1;
 	ft_think(ph);
 	ft_usleep(ph, time);
 }
