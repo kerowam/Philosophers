@@ -6,11 +6,13 @@
 /*   By: gfredes- <gfredes-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 15:28:36 by gfredes-          #+#    #+#             */
-/*   Updated: 2024/04/14 21:01:41 by gfredes-         ###   ########.fr       */
+/*   Updated: 2024/04/14 22:02:51 by gfredes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+//int	ft_read_vars()
 
 void	*ft_death_checker(void *philo)
 {
@@ -91,9 +93,11 @@ int	ft_check_finished(t_info *info)
 	meal_count = 0;
 	while (i < info->nbr_of_philos)
 	{
+		pthread_mutex_lock(&info->meal_mutex);
 		if (info->philos[i].meals_eaten
 			>= info->nbr_of_times_each_philo_must_eat)
 			meal_count++;
+		pthread_mutex_unlock(&info->meal_mutex);
 		i++;
 	}
 	if (meal_count == info->nbr_of_philos)

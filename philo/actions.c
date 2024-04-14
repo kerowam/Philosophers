@@ -6,7 +6,7 @@
 /*   By: gfredes- <gfredes-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 19:50:44 by gfredes-          #+#    #+#             */
-/*   Updated: 2024/04/14 21:03:04 by gfredes-         ###   ########.fr       */
+/*   Updated: 2024/04/14 21:50:41 by gfredes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,9 @@ void	ft_eat(t_philo *ph)
 	pthread_mutex_lock(&ph->info->mutex);
 	ph->time_of_death = ft_get_time() + ph->info->time_to_die;
 	pthread_mutex_unlock(&ph->info->mutex);
+	pthread_mutex_lock(&ph->info->meal_mutex);
 	ph->meals_eaten++;
+	pthread_mutex_unlock(&ph->info->meal_mutex);
 	if (ph->info->time_to_eat > 0)
 		ft_usleep(ph, ph->info->time_to_eat);
 	pthread_mutex_unlock(ph->left_fork);
