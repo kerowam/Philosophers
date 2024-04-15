@@ -6,7 +6,7 @@
 /*   By: gfredes- <gfredes-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 19:50:44 by gfredes-          #+#    #+#             */
-/*   Updated: 2024/04/14 20:47:10 by gfredes-         ###   ########.fr       */
+/*   Updated: 2024/04/15 20:38:46 by gfredes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	ft_eat(t_philo *ph)
 	time_t	time;
 
 	pthread_mutex_lock(ph->left_fork);
-	if (ph->info->death == 0 && ph->info->finished == 0)
+	if (ph->info->end == 0)
 	{
 		pthread_mutex_lock(&ph->info->print);
 		time = ft_get_time() - ph->info->start_time;
@@ -25,7 +25,7 @@ void	ft_eat(t_philo *ph)
 		pthread_mutex_unlock(&ph->info->print);
 	}
 	pthread_mutex_lock(ph->right_fork);
-	if (ph->info->death == 0 && ph->info->finished == 0)
+	if (ph->info->end == 0)
 	{
 		pthread_mutex_lock(&ph->info->print);
 		time = ft_get_time() - ph->info->start_time;
@@ -53,7 +53,7 @@ void	ft_sleep(t_philo *ph)
 
 	pthread_mutex_lock(&ph->info->print);
 	time = ft_get_time() - ph->info->start_time;
-	if (ph->info->death == 0 && ph->info->finished == 0)
+	if (ph->info->end == 0)
 		printf("%lu %d is sleeping\n", time, ph->id);
 	pthread_mutex_unlock(&ph->info->print);
 	if (ph->info->time_to_sleep > 0)
@@ -66,7 +66,7 @@ void	ft_think(t_philo *ph)
 
 	pthread_mutex_lock(&ph->info->print);
 	time = ft_get_time() - ph->info->start_time;
-	if (ph->info->death == 0 && ph->info->finished == 0)
+	if (ph->info->end == 0)
 	{
 		printf("%lu %d is thinking\n", time, ph->id);
 	}

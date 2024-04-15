@@ -6,27 +6,44 @@
 /*   By: gfredes- <gfredes-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 15:28:36 by gfredes-          #+#    #+#             */
-/*   Updated: 2024/04/15 18:02:46 by gfredes-         ###   ########.fr       */
+/*   Updated: 2024/04/15 21:00:00 by gfredes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int	ft_read_value(int value, pthread_mutex_t mutex)
+{
+	pthread_mutex_lock(&mutex);
+	if (value == 0)
+	{
+		pthread_mutex_unlock(&mutex);
+		return (0);
+	}
+	else 
+	{
+		pthread_mutex_unlock(&mutex);
+		return (1);
+	}
+}
 
 void	*ft_death_checker(void *philo)
 {
 	t_philo	*ph;
 
 	ph = (t_philo *)philo;
-	//pthread_mutex_lock(&ph->info->mutex);
-	while (ph->info->death == 0 && ph->info->finished == 0)
+	//pthread_mutex_lock(&ph->info->end_mutex);
+	while (ft_read_value(ph->info->end, ph->info->end_mutex) == 0)
+	//while (ph->info->end == 0)
 	{
-		//pthread_mutex_unlock(&ph->info->mutex);
+		//pthread_mutex_unlock(&ph->info->end_mutex);
 		//pthread_mutex_lock(&ph->info->mutex);
 		if (ft_get_time() >= ph->time_of_death && ph->eating == 0)
 		{
-			if (ph->info->finished == 0 && ph->info->death == 0)
+			if (ph->info->end == 0)
 			{
 				ph->info->death = 1;
+				ph->info->end = 1;
 				//pthread_mutex_unlock(&ph->info->mutex);
 				pthread_mutex_lock(&ph->info->print);
 				printf("%lu %d died\n", ft_get_time() - ph->info->start_time,
@@ -61,20 +78,20 @@ void	*routine(void *philo)
 	ph = (t_philo *)philo;
 	if (pthread_create(&ph->thread, NULL, &ft_death_checker, (void *)ph))
 		return ((void *)1);
-	while (ft_get_time() < ph->info->start_time)
+	while (ph->info->inited == 0)
 		usleep(10);
 	pthread_mutex_lock(&ph->info->mutex);
 	ph->time_of_death = ph->info->start_time + ph->info->time_to_die;
 	pthread_mutex_unlock(&ph->info->mutex);
 	if (ph->id % 2 == 0)
 		ft_add_delay(ph);
-	while (ph->info->death == 0 && ph->info->finished == 0)
+	while (ph->info->end == 0)
 	{
-		if (ph->info->death == 0 && ph->info->finished == 0)
+		if (ph->info->end == 0)
 			ft_eat(ph);
-		if (ph->info->death == 0 && ph->info->finished == 0)
+		if (ph->info->end == 0)
 			ft_sleep(ph);
-		if (ph->info->death == 0 && ph->info->finished == 0)
+		if (ph->info->end == 0)
 			ft_think(ph);
 	}
 	if (pthread_join(ph->thread, NULL))
@@ -100,9 +117,10 @@ int	ft_check_finished(t_info *info)
 	{
 		pthread_mutex_lock(&info->mutex);
 		info->finished = 1;
+		info->end = 1;
 		pthread_mutex_unlock(&info->mutex);
 	}
-	if (info->finished == 1)
+	if (info->end == 1)
 		return (1);
 	return (0);
 }
@@ -113,9 +131,9 @@ int	ft_threads(t_info *info)
 	pthread_t	checker_thread;
 
 	i = 0;
-	if (info->nbr_of_philos > 50)
-		info->start_time = ft_get_time() + (info->nbr_of_philos * 3);
-	else
+	//if (info->nbr_of_philos > 50)
+	//	info->start_time = ft_get_time() + (info->nbr_of_philos * 3);
+	//else
 		info->start_time = ft_get_time();
 	while (i < info->nbr_of_philos)
 	{
@@ -125,6 +143,7 @@ int	ft_threads(t_info *info)
 		usleep(10);
 		i++;
 	}
+	info->inited = 1;
 	if (info->nbr_of_times_each_philo_must_eat > 0)
 	{
 		if (ft_init_thread(&checker_thread, &ft_end_checker, info) == 1)

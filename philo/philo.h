@@ -33,12 +33,14 @@ typedef struct s_info
 	struct s_philo	*philos;
 	int				death;
 	int				finished;
+	int				end;
+	int				inited;
 	pthread_t		*threads_id;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	print;
 	pthread_mutex_t	mutex;
-	pthread_mutex_t	death_mutex;
-	pthread_mutex_t	finish_mutex;
+	pthread_mutex_t	end_mutex;
+	//pthread_mutex_t	finish_mutex;
 	pthread_mutex_t	meal_mutex;
 }					t_info;
 
