@@ -6,7 +6,7 @@
 /*   By: gfredes- <gfredes-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 15:28:36 by gfredes-          #+#    #+#             */
-/*   Updated: 2024/04/14 20:54:47 by gfredes-         ###   ########.fr       */
+/*   Updated: 2024/04/15 18:02:46 by gfredes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,17 +117,18 @@ int	ft_threads(t_info *info)
 		info->start_time = ft_get_time() + (info->nbr_of_philos * 3);
 	else
 		info->start_time = ft_get_time();
-	if (info->nbr_of_times_each_philo_must_eat > 0)
-	{
-		if (ft_init_thread(&checker_thread, &ft_end_checker, info) == 1)
-			return (1);
-	}
 	while (i < info->nbr_of_philos)
 	{
 		if (ft_init_thread(&info->threads_id[i], &routine, &info->philos[i]))
 			return (1);
+		info->philos[i].time_of_death = info->start_time + info->time_to_die;
 		usleep(10);
 		i++;
+	}
+	if (info->nbr_of_times_each_philo_must_eat > 0)
+	{
+		if (ft_init_thread(&checker_thread, &ft_end_checker, info) == 1)
+			return (1);
 	}
 	if (ft_join_threads(info) == 1)
 		return (1);
