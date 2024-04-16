@@ -6,7 +6,7 @@
 /*   By: gfredes- <gfredes-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 19:50:44 by gfredes-          #+#    #+#             */
-/*   Updated: 2024/04/15 20:38:46 by gfredes-         ###   ########.fr       */
+/*   Updated: 2024/04/16 19:38:14 by gfredes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,27 +17,41 @@ void	ft_eat(t_philo *ph)
 	time_t	time;
 
 	pthread_mutex_lock(ph->left_fork);
+	pthread_mutex_lock(&ph->info->end_mutex);
 	if (ph->info->end == 0)
 	{
+		pthread_mutex_unlock(&ph->info->end_mutex);
 		pthread_mutex_lock(&ph->info->print);
 		time = ft_get_time() - ph->info->start_time;
 		printf("%lu %d has taken a fork\n", time, ph->id);
 		pthread_mutex_unlock(&ph->info->print);
 	}
+	else
+		pthread_mutex_unlock(&ph->info->end_mutex);
 	pthread_mutex_lock(ph->right_fork);
+	pthread_mutex_lock(&ph->info->end_mutex);
 	if (ph->info->end == 0)
 	{
+		pthread_mutex_unlock(&ph->info->end_mutex);
 		pthread_mutex_lock(&ph->info->print);
 		time = ft_get_time() - ph->info->start_time;
 		printf("%lu %d has taken a fork\n", time, ph->id);
 		pthread_mutex_unlock(&ph->info->print);
 	}
+	else
+		pthread_mutex_unlock(&ph->info->end_mutex);
 	ph->eating = 1;
-	pthread_mutex_lock(&ph->info->print);
-	time = ft_get_time() - ph->info->start_time;
-	if (ph->info->death == 0 && ph->info->finished == 0)
+	pthread_mutex_lock(&ph->info->end_mutex);
+	if (ph->info->end == 0)
+	{
+		pthread_mutex_unlock(&ph->info->end_mutex);
+		pthread_mutex_lock(&ph->info->print);
+		time = ft_get_time() - ph->info->start_time;
 		printf("%lu %d is eating\n", time, ph->id);
-	pthread_mutex_unlock(&ph->info->print);
+		pthread_mutex_unlock(&ph->info->print);
+	}
+	else
+		pthread_mutex_unlock(&ph->info->end_mutex);
 	ph->time_of_death = ft_get_time() + ph->info->time_to_die;
 	ph->meals_eaten++;
 	if (ph->info->time_to_eat > 0)
@@ -53,9 +67,11 @@ void	ft_sleep(t_philo *ph)
 
 	pthread_mutex_lock(&ph->info->print);
 	time = ft_get_time() - ph->info->start_time;
+	pthread_mutex_lock(&ph->info->end_mutex);
 	if (ph->info->end == 0)
 		printf("%lu %d is sleeping\n", time, ph->id);
 	pthread_mutex_unlock(&ph->info->print);
+	pthread_mutex_unlock(&ph->info->end_mutex);
 	if (ph->info->time_to_sleep > 0)
 		ft_usleep(ph, ph->info->time_to_sleep);
 }
@@ -66,9 +82,11 @@ void	ft_think(t_philo *ph)
 
 	pthread_mutex_lock(&ph->info->print);
 	time = ft_get_time() - ph->info->start_time;
+	pthread_mutex_lock(&ph->info->end_mutex);
 	if (ph->info->end == 0)
 	{
 		printf("%lu %d is thinking\n", time, ph->id);
 	}
+	pthread_mutex_unlock(&ph->info->end_mutex);
 	pthread_mutex_unlock(&ph->info->print);
 }

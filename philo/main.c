@@ -49,22 +49,24 @@ void	ft_one_philo(t_info *info)
 
 int	main(int argc, char **argv)
 {
-	t_info	info;
+	t_info	*info;
 
+	info = (t_info *)malloc(sizeof(t_info));
 	if (check_args(argc, argv))
 		return (1);
-	ft_get_info(&info, argv);
-	ft_init_philos(&info);
-	if (info.nbr_of_philos == 1)
+	ft_get_info(info, argv);
+	ft_init_philos(info);
+	if (info->nbr_of_philos == 1)
 	{
-		ft_one_philo(&info);
+		ft_one_philo(info);
 		return (1);
 	}
 	else
 	{
-		if (ft_threads(&info))
+		if (ft_threads(info))
 			return (1);
 	}
-	ft_end(&info);
+	ft_end(info);
+	free(info);
 	return (0);
 }

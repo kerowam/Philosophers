@@ -6,7 +6,7 @@
 /*   By: gfredes- <gfredes-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 04:39:30 by gfredes-          #+#    #+#             */
-/*   Updated: 2024/03/29 04:50:44 by gfredes-         ###   ########.fr       */
+/*   Updated: 2024/04/16 19:22:08 by gfredes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,11 @@ void	*ft_end_checker(void *info)
 	inf = (t_info *)info;
 	while (1)
 	{
+		//pthread_mutex_lock(&inf->end_mutex);
 		if (ft_check_finished(inf) == 1 || inf->death == 1)
 			break ;
-		usleep(10);
+		//pthread_mutex_unlock(&inf->end_mutex);
+		usleep(100);
 	}
 	return ((void *)0);
 }

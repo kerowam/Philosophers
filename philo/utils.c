@@ -6,7 +6,7 @@
 /*   By: gfredes- <gfredes-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 15:09:24 by gfredes-          #+#    #+#             */
-/*   Updated: 2024/04/14 18:58:03 by gfredes-         ###   ########.fr       */
+/*   Updated: 2024/04/16 17:38:39 by gfredes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,11 @@ void	ft_usleep(t_philo *ph, useconds_t time)
 	time_passed = 0;
 	gettimeofday(&start, NULL);
 	usleep(time * 920);
+	pthread_mutex_lock(&ph->info->end_mutex);
 	while (time_passed < time * 1000 && ph->info->death == 0
 		&& ph->info->finished == 0)
 	{
+		pthread_mutex_unlock(&ph->info->end_mutex);
 		gettimeofday(&end, NULL);
 		time_passed = ((end.tv_sec - start.tv_sec) * 1000000)
 			+ (end.tv_usec - start.tv_usec);
@@ -57,6 +59,7 @@ void	ft_usleep(t_philo *ph, useconds_t time)
 		if (ph->info->death == 1)
 			break ;
 	}
+	pthread_mutex_unlock(&ph->info->end_mutex);
 }
 
 void	ft_check_info(t_info *info)
@@ -77,4 +80,19 @@ void	ft_add_delay(t_philo *ph)
 		time = 1;
 	ft_think(ph);
 	ft_usleep(ph, time);
+}
+
+int	ft_read_value(int value, pthread_mutex_t mutex)
+{
+	pthread_mutex_lock(&mutex);
+	if (value == 0)
+	{
+		pthread_mutex_unlock(&mutex);
+		return (0);
+	}
+	else 
+	{
+		pthread_mutex_unlock(&mutex);
+		return (1);
+	}
 }

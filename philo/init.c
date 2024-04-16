@@ -6,7 +6,7 @@
 /*   By: gfredes- <gfredes-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 16:14:37 by gfredes-          #+#    #+#             */
-/*   Updated: 2024/04/15 20:47:59 by gfredes-         ###   ########.fr       */
+/*   Updated: 2024/04/16 19:42:53 by gfredes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,19 @@ int	ft_get_info(t_info *info, char **argv)
 	ft_check_info(info);
 	info->death = 0;
 	info->finished = 0;
+	/*info->end = (int *)malloc(sizeof(int));
+	if (!info->end)
+	{
+		printf("Error: malloc failed\n");
+		return (1);
+	}*/
 	info->end = 0;
 	info->start_time = ft_get_time();
 	pthread_mutex_init(&info->print, NULL);
 	pthread_mutex_init(&info->mutex, NULL);
+	pthread_mutex_init(&info->end_mutex, NULL);
+	pthread_mutex_init(&info->death_mutex, NULL);
+	pthread_mutex_init(&info->meal_mutex, NULL);
 	info->forks = malloc(sizeof(pthread_mutex_t) * info->nbr_of_philos);
 	info->threads_id = malloc(sizeof(pthread_t) * info->nbr_of_philos);
 	if (!info->forks || !info->threads_id)
