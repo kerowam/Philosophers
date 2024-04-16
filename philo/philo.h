@@ -43,6 +43,7 @@ typedef struct s_info
 	pthread_mutex_t	death_mutex;
 	//pthread_mutex_t	finish_mutex;
 	pthread_mutex_t	meal_mutex;
+	pthread_mutex_t	init_mutex;
 }					t_info;
 
 typedef struct s_philo
@@ -70,7 +71,7 @@ int		ft_atoi(const char *str);
 void	ft_usleep(t_philo *ph, useconds_t time);
 void	ft_check_info(t_info *info);
 void	ft_add_delay(t_philo *ph);
-int		ft_read_value(int value, pthread_mutex_t mutex);
+int		ft_read_value(int *value, pthread_mutex_t mutex);
 
 //init.c
 time_t	ft_get_time(void);	

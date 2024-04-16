@@ -6,7 +6,7 @@
 /*   By: gfredes- <gfredes-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 15:09:24 by gfredes-          #+#    #+#             */
-/*   Updated: 2024/04/16 17:38:39 by gfredes-         ###   ########.fr       */
+/*   Updated: 2024/04/16 20:19:51 by gfredes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	ft_usleep(t_philo *ph, useconds_t time)
 			+ (end.tv_usec - start.tv_usec);
 		usleep(time * 3);
 		if (ph->info->death == 1)
-			break ;
+			return ;
 	}
 	pthread_mutex_unlock(&ph->info->end_mutex);
 }
@@ -82,10 +82,10 @@ void	ft_add_delay(t_philo *ph)
 	ft_usleep(ph, time);
 }
 
-int	ft_read_value(int value, pthread_mutex_t mutex)
+int	ft_read_value(int *value, pthread_mutex_t mutex)
 {
 	pthread_mutex_lock(&mutex);
-	if (value == 0)
+	if (*value == 0)
 	{
 		pthread_mutex_unlock(&mutex);
 		return (0);
