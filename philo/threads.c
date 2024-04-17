@@ -6,7 +6,7 @@
 /*   By: gfredes- <gfredes-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 15:28:36 by gfredes-          #+#    #+#             */
-/*   Updated: 2024/04/16 20:30:21 by gfredes-         ###   ########.fr       */
+/*   Updated: 2024/04/17 16:50:35 by gfredes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@ void	*ft_death_checker(void *philo)
 	t_philo	*ph;
 
 	ph = (t_philo *)philo;
-	pthread_mutex_lock(&ph->info->end_mutex);
-	while (ph->info->end == 0)
+	//pthread_mutex_lock(&ph->info->end_mutex);
+	while (ft_read_value(&ph->info->end, &ph->info->end_mutex) == 0)
 	{
-		pthread_mutex_unlock(&ph->info->end_mutex);
+		//pthread_mutex_unlock(&ph->info->end_mutex);
 		pthread_mutex_lock(&ph->mutex);
 		if (ft_get_time() >= ph->time_of_death && ph->eating == 0)
 		{
@@ -29,6 +29,8 @@ void	*ft_death_checker(void *philo)
 			pthread_mutex_lock(&ph->info->end_mutex);
 			if (ph->info->end == 0)
 			{
+				pthread_mutex_unlock(&ph->info->end_mutex);
+				pthread_mutex_lock(&ph->info->end_mutex);
 				ph->info->end = 1;
 				pthread_mutex_unlock(&ph->info->end_mutex);
 				pthread_mutex_lock(&ph->info->death_mutex);
@@ -70,10 +72,10 @@ void	*routine(void *philo)
 	ph = (t_philo *)philo;
 	if (pthread_create(&ph->thread, NULL, &ft_death_checker, (void *)ph))
 		return ((void *)1);
-	pthread_mutex_lock(&ph->info->init_mutex);
-	while (ph->info->inited == 0)
+	//pthread_mutex_lock(&ph->info->init_mutex);
+	while (ft_read_value(&ph->info->inited, &ph->info->init_mutex) == 0)
 	{
-		pthread_mutex_unlock(&ph->info->init_mutex);
+	//	pthread_mutex_unlock(&ph->info->init_mutex);
 		usleep(10);
 	}
 	pthread_mutex_unlock(&ph->info->init_mutex);
@@ -121,8 +123,13 @@ int	ft_check_finished(t_info *info)
 		info->end = 1;
 		pthread_mutex_unlock(&info->end_mutex);
 	}
+	pthread_mutex_lock(&info->end_mutex);
 	if (info->end == 1)
+	{
+		pthread_mutex_unlock(&info->end_mutex);
 		return (1);
+	}
+	pthread_mutex_unlock(&info->end_mutex);
 	return (0);
 }
 
