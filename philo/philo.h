@@ -41,7 +41,6 @@ typedef struct s_info
 	pthread_mutex_t	mutex;
 	pthread_mutex_t	end_mutex;
 	pthread_mutex_t	death_mutex;
-	//pthread_mutex_t	finish_mutex;
 	pthread_mutex_t	meal_mutex;
 	pthread_mutex_t	init_mutex;
 }					t_info;
@@ -96,4 +95,12 @@ void	*ft_end_checker(void *info);
 int		ft_init_thread(pthread_t *thread, void *(*routine)(void *), void *arg);
 int		ft_join_thread(pthread_t thread);
 int		ft_join_threads(t_info *info);
+void	ft_set_value(int *value, int new_value, pthread_mutex_t *mutex);
+
+//init_utils.c
+void	ft_init_mutex(t_info *info);
+
+//threads_utils2.c
+int		ft_manage_end_checker(pthread_t *thread, void *routine, t_info *info);
+
 #endif

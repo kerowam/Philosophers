@@ -23,6 +23,8 @@ SRC = main.c\
 	threads.c\
 	actions.c\
 	threads_utils.c\
+	init_utils.c\
+	threads_utils2.c\
 
 OBJT = $(SRC:.c=.o)
 

@@ -6,7 +6,7 @@
 /*   By: gfredes- <gfredes-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 15:09:24 by gfredes-          #+#    #+#             */
-/*   Updated: 2024/04/17 17:58:21 by gfredes-         ###   ########.fr       */
+/*   Updated: 2024/04/17 19:58:36 by gfredes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,9 @@ void	ft_usleep(t_philo *ph, useconds_t time)
 	time_passed = 0;
 	gettimeofday(&start, NULL);
 	usleep(time * 920);
-	//pthread_mutex_lock(&ph->info->end_mutex);
-	while (time_passed < time * 1000 && ft_read_value(&ph->info->end, &ph->info->end_mutex) == 0)
+	while (time_passed < time * 1000
+		&& ft_read_value(&ph->info->end, &ph->info->end_mutex) == 0)
 	{
-		//pthread_mutex_unlock(&ph->info->end_mutex);
 		gettimeofday(&end, NULL);
 		time_passed = ((end.tv_sec - start.tv_sec) * 1000000)
 			+ (end.tv_usec - start.tv_usec);
@@ -63,7 +62,6 @@ void	ft_usleep(t_philo *ph, useconds_t time)
 		}
 		pthread_mutex_unlock(&ph->info->death_mutex);
 	}
-	//pthread_mutex_unlock(&ph->info->end_mutex);
 }
 
 void	ft_check_info(t_info *info)

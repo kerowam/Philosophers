@@ -6,7 +6,7 @@
 /*   By: gfredes- <gfredes-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 15:28:36 by gfredes-          #+#    #+#             */
-/*   Updated: 2024/04/17 17:02:22 by gfredes-         ###   ########.fr       */
+/*   Updated: 2024/04/17 20:39:36 by gfredes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,38 +17,23 @@ void	*ft_death_checker(void *philo)
 	t_philo	*ph;
 
 	ph = (t_philo *)philo;
-	//pthread_mutex_lock(&ph->info->end_mutex);
 	while (ft_read_value(&ph->info->end, &ph->info->end_mutex) == 0)
 	{
-		//pthread_mutex_unlock(&ph->info->end_mutex);
 		pthread_mutex_lock(&ph->mutex);
 		if (ft_get_time() >= ph->time_of_death && ph->eating == 0)
 		{
 			pthread_mutex_unlock(&ph->mutex);
-			//pthread_mutex_unlock(&ph->info->death_mutex);
-			pthread_mutex_lock(&ph->info->end_mutex);
-			if (ph->info->end == 0)
+			if (ft_read_value(&ph->info->end, &ph->info->end_mutex) == 0)
 			{
-				pthread_mutex_unlock(&ph->info->end_mutex);
-				pthread_mutex_lock(&ph->info->end_mutex);
-				ph->info->end = 1;
-				pthread_mutex_unlock(&ph->info->end_mutex);
-				pthread_mutex_lock(&ph->info->death_mutex);
-				ph->info->death = 1;
-				pthread_mutex_unlock(&ph->info->death_mutex);
-				pthread_mutex_lock(&ph->info->print);
-				printf("%lu %d died\n", ft_get_time() - ph->info->start_time,
-					ph->id);
-				pthread_mutex_unlock(&ph->info->print);
+				ft_set_value(&ph->info->end, 1, &ph->info->end_mutex);
+				ft_set_value(&ph->info->death, 1, &ph->info->death_mutex);
+				ft_print(ph, "died");
 			}
-			else
-				pthread_mutex_unlock(&ph->info->end_mutex);
 		}
 		else
 			pthread_mutex_unlock(&ph->mutex);
 		usleep(100);
 	}
-	pthread_mutex_unlock(&ph->info->end_mutex);
 	return ((void *)0);
 }
 
@@ -72,12 +57,8 @@ void	*routine(void *philo)
 	ph = (t_philo *)philo;
 	if (pthread_create(&ph->thread, NULL, &ft_death_checker, (void *)ph))
 		return ((void *)1);
-	//pthread_mutex_lock(&ph->info->init_mutex);
 	while (ft_read_value(&ph->info->inited, &ph->info->init_mutex) == 0)
-	{
-	//	pthread_mutex_unlock(&ph->info->init_mutex);
 		usleep(10);
-	}
 	pthread_mutex_unlock(&ph->info->init_mutex);
 	pthread_mutex_lock(&ph->mutex);
 	ph->time_of_death = ph->info->start_time + ph->info->time_to_die;
@@ -86,12 +67,9 @@ void	*routine(void *philo)
 		ft_add_delay(ph);
 	while (ft_read_value(&ph->info->end, &ph->info->end_mutex) == 0)
 	{
-		//if (ph->info->end == 0)
-			ft_eat(ph);
-		//if (ph->info->end == 0)
-			ft_sleep(ph);
-		//if (ph->info->end == 0)
-			ft_think(ph);
+		ft_eat(ph);
+		ft_sleep(ph);
+		ft_think(ph);
 	}
 	if (pthread_join(ph->thread, NULL))
 		return ((void *)1);
@@ -116,20 +94,11 @@ int	ft_check_finished(t_info *info)
 	}
 	if (meal_count == info->nbr_of_philos)
 	{
-		pthread_mutex_lock(&info->end_mutex);
-		info->finished = 1;
-		pthread_mutex_unlock(&info->end_mutex);
-		pthread_mutex_lock(&info->end_mutex);
-		info->end = 1;
-		pthread_mutex_unlock(&info->end_mutex);
+		ft_set_value(&info->finished, 1, &info->end_mutex);
+		ft_set_value(&info->end, 1, &info->end_mutex);
 	}
-	pthread_mutex_lock(&info->end_mutex);
-	if (info->end == 1)
-	{
-		pthread_mutex_unlock(&info->end_mutex);
+	if (ft_read_value(&info->end, &info->end_mutex) == 1)
 		return (1);
-	}
-	pthread_mutex_unlock(&info->end_mutex);
 	return (0);
 }
 
@@ -139,10 +108,8 @@ int	ft_threads(t_info *info)
 	pthread_t	checker_thread;
 
 	i = 0;
-	//if (info->nbr_of_philos > 50)
-	//	info->start_time = ft_get_time() + (info->nbr_of_philos * 3);
-	//else
-		info->start_time = ft_get_time();
+	info->start_time = ft_get_time();
+	checker_thread = 0;
 	while (i < info->nbr_of_philos)
 	{
 		if (ft_init_thread(&info->threads_id[i], &routine, &info->philos[i]))
@@ -153,20 +120,13 @@ int	ft_threads(t_info *info)
 		usleep(10);
 		i++;
 	}
-	pthread_mutex_lock(&info->init_mutex);
-	info->inited = 1;
-	pthread_mutex_unlock(&info->init_mutex);
+	ft_set_value(&info->inited, 1, &info->init_mutex);
 	if (info->nbr_of_times_each_philo_must_eat > 0)
 	{
-		if (ft_init_thread(&checker_thread, &ft_end_checker, info) == 1)
+		if (ft_manage_end_checker(&checker_thread, &ft_end_checker, info) == 1)
 			return (1);
 	}
 	if (ft_join_threads(info) == 1)
 		return (1);
-	if (info->nbr_of_times_each_philo_must_eat > 0)
-	{
-		if (ft_join_thread(checker_thread) == 1)
-			return (1);
-	}
 	return (0);
 }

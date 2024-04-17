@@ -6,7 +6,7 @@
 /*   By: gfredes- <gfredes-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 04:39:30 by gfredes-          #+#    #+#             */
-/*   Updated: 2024/04/16 23:20:06 by gfredes-         ###   ########.fr       */
+/*   Updated: 2024/04/17 19:49:30 by gfredes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,4 +65,11 @@ int	ft_join_threads(t_info *info)
 		i++;
 	}
 	return (0);
+}
+
+void	ft_set_value(int *value, int new_value, pthread_mutex_t *mutex)
+{
+	pthread_mutex_lock(mutex);
+	*value = new_value;
+	pthread_mutex_unlock(mutex);
 }
