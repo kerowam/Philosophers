@@ -6,7 +6,7 @@
 /*   By: gfredes- <gfredes-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 16:14:37 by gfredes-          #+#    #+#             */
-/*   Updated: 2024/04/16 20:22:48 by gfredes-         ###   ########.fr       */
+/*   Updated: 2024/04/17 17:57:20 by gfredes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,6 @@ int	ft_get_info(t_info *info, char **argv)
 	ft_check_info(info);
 	info->death = 0;
 	info->finished = 0;
-	/*info->end = (int *)malloc(sizeof(int));
-	if (!info->end)
-	{
-		printf("Error: malloc failed\n");
-		return (1);
-	}*/
 	info->end = 0;
 	info->start_time = ft_get_time();
 	pthread_mutex_init(&info->print, NULL);

@@ -89,6 +89,7 @@ int		ft_check_finished(t_info *info);
 void	ft_eat(t_philo *ph);
 void	ft_sleep(t_philo *ph);
 void	ft_think(t_philo *ph);
+void	ft_print(t_philo *ph, char *str);
 
 //threads_utils.c
 void	*ft_end_checker(void *info);

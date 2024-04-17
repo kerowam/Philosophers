@@ -6,7 +6,7 @@
 /*   By: gfredes- <gfredes-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 15:09:24 by gfredes-          #+#    #+#             */
-/*   Updated: 2024/04/17 17:04:41 by gfredes-         ###   ########.fr       */
+/*   Updated: 2024/04/17 17:58:21 by gfredes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int	ft_read_value(int *value, pthread_mutex_t *mutex)
 		pthread_mutex_unlock(mutex);
 		return (0);
 	}
-	else 
+	else
 	{
 		pthread_mutex_unlock(mutex);
 		return (1);
