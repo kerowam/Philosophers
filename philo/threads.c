@@ -6,7 +6,7 @@
 /*   By: gfredes- <gfredes-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 15:28:36 by gfredes-          #+#    #+#             */
-/*   Updated: 2024/04/17 16:50:35 by gfredes-         ###   ########.fr       */
+/*   Updated: 2024/04/17 17:02:22 by gfredes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,13 +84,13 @@ void	*routine(void *philo)
 	pthread_mutex_unlock(&ph->mutex);
 	if (ph->id % 2 == 0)
 		ft_add_delay(ph);
-	while (ph->info->end == 0)
+	while (ft_read_value(&ph->info->end, &ph->info->end_mutex) == 0)
 	{
-		if (ph->info->end == 0)
+		//if (ph->info->end == 0)
 			ft_eat(ph);
-		if (ph->info->end == 0)
+		//if (ph->info->end == 0)
 			ft_sleep(ph);
-		if (ph->info->end == 0)
+		//if (ph->info->end == 0)
 			ft_think(ph);
 	}
 	if (pthread_join(ph->thread, NULL))

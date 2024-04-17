@@ -6,7 +6,7 @@
 /*   By: gfredes- <gfredes-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 19:50:44 by gfredes-          #+#    #+#             */
-/*   Updated: 2024/04/17 16:57:33 by gfredes-         ###   ########.fr       */
+/*   Updated: 2024/04/17 17:03:40 by gfredes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,9 @@ void	ft_eat(t_philo *ph)
 		ft_usleep(ph, ph->info->time_to_eat);
 	pthread_mutex_unlock(ph->left_fork);
 	pthread_mutex_unlock(ph->right_fork);
+	pthread_mutex_lock(&ph->mutex);
 	ph->eating = 0;
+	pthread_mutex_unlock(&ph->mutex);
 }
 
 void	ft_sleep(t_philo *ph)

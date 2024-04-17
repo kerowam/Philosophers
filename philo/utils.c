@@ -6,7 +6,7 @@
 /*   By: gfredes- <gfredes-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 15:09:24 by gfredes-          #+#    #+#             */
-/*   Updated: 2024/04/17 16:58:18 by gfredes-         ###   ########.fr       */
+/*   Updated: 2024/04/17 17:04:41 by gfredes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,13 @@ void	ft_usleep(t_philo *ph, useconds_t time)
 		time_passed = ((end.tv_sec - start.tv_sec) * 1000000)
 			+ (end.tv_usec - start.tv_usec);
 		usleep(time * 3);
+		pthread_mutex_lock(&ph->info->death_mutex);
 		if (ph->info->death == 1)
+		{
+			pthread_mutex_unlock(&ph->info->death_mutex);
 			return ;
+		}
+		pthread_mutex_unlock(&ph->info->death_mutex);
 	}
 	//pthread_mutex_unlock(&ph->info->end_mutex);
 }
