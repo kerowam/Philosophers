@@ -19,14 +19,20 @@ CLEAN = rm -f
 SRC = main.c\
 	check_args.c\
 	utils.c\
+	init.c\
+	threads.c\
+	actions.c\
+	threads_utils.c\
+	init_utils.c\
+	threads_utils2.c\
 
 OBJT = $(SRC:.c=.o)
 
 all: $(NAME)
 
 $(NAME): $(OBJT)
-	gcc $(CFLAGS) $(SRC) -o $(NAME) -lpthread 
-
+	gcc -g $(CFLAGS) $(SRC) -o $(NAME) -lpthread 
+#-fsanitize=thread
 clean:
 	$(CLEAN) $(OBJT)
 
